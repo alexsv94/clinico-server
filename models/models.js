@@ -11,10 +11,6 @@ const User = sequelize.define('user', {
 	banned: { type: DataTypes.BOOLEAN, defaultValue: false }
 })
 
-const Favorites = sequelize.define('favorites', {
-	id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-})
-
 const Desease = sequelize.define('desease', {
 	id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
 	name: { type: DataTypes.STRING, unique: true, allowNull: false },
@@ -71,14 +67,11 @@ const DosageForm = sequelize.define('dosage_form', {
 	application_mode: { type: DataTypes.TEXT, allowNull: false },
 })
 
-User.hasOne(Favorites);
-Favorites.belongsTo(User);
+User.hasMany(FavoriteDesease);
+FavoriteDesease.belongsTo(User);
 
-Favorites.hasMany(FavoriteDesease);
-FavoriteDesease.belongsTo(Favorites);
-
-Favorites.hasMany(FavoriteMedication);
-FavoriteMedication.belongsTo(Favorites);
+User.hasMany(FavoriteMedication);
+FavoriteMedication.belongsTo(User);
 
 Desease.hasOne(FavoriteDesease);
 FavoriteDesease.belongsTo(Desease);
@@ -103,7 +96,6 @@ DosageForm.belongsTo(Medication);
 
 module.exports = {
 	User,
-	Favorites,
 	Desease,
 	Medication,
 	Symptom,
