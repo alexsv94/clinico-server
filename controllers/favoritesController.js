@@ -33,6 +33,8 @@ class FavoritesController {
 	async deleteFavoriteDesease(req, res, next) {
 		const { id } = req.params
 
+		const result = await FavoriteDesease.destroy({ where: { deseaseId: id } })
+
 		if (result > 0) return res.json({ message: `Удалено ${result} заболеваний из избранного` })
 		else return next(ApiError.notFound('Заболевание не найдено в избранном'))
 	}
