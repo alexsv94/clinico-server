@@ -7,6 +7,7 @@ class FavoritesController {
 
 	async getFavoriteDeseases(req, res, next) {
 		const user = req.user
+
 		const favorites = await FavoriteDesease.findAll({ where: { userId: user.id }});
 		const favoriteDeseases = []
 
@@ -32,10 +33,8 @@ class FavoritesController {
 	async deleteFavoriteDesease(req, res, next) {
 		const { id } = req.params
 
-		const result = await FavoriteDesease.destroy({ where: { deseaseId: id } })
-
 		if (result > 0) return res.json({ message: `Удалено ${result} заболеваний из избранного` })
-		else return next(ApiError.badRequest('Заболевание не найдено в избранном'))
+		else return next(ApiError.notFound('Заболевание не найдено в избранном'))
 	}
 
 	async checkDeseaseInFavorites(req, res, next) {
@@ -51,6 +50,7 @@ class FavoritesController {
 
 	async getFavoriteMedications(req, res, next) {
 		const user = req.user
+
 		const favorites = await FavoriteMedication.findAll({ where: { userId: user.id }});
 		const favoriteMedications = []
 
@@ -64,6 +64,8 @@ class FavoritesController {
 	async createFavoriteMedication(req, res, next) {
 		const user = req.user
 		const { medicationId } = req.body
+
+		if (!user) next(ApiError.notAuthorized('Пользователь не авторизован'))
 
 		if (medicationId) {
 			const favoriteMedication = await FavoriteMedication.create({ userId: user.id, medicationId });

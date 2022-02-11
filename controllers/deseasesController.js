@@ -88,6 +88,8 @@ class DeseasesController {
 			]
 		});
 
+		if (!desease) return next(ApiError.notFound('Заболевание не найдено'))
+
 		return res.json(desease);
 	}
 

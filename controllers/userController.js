@@ -64,7 +64,7 @@ class UserController {
 
 		if (req.user.id !== user.id) {
 			if (req.user.role !== 'ADMIN')
-				return next(ApiError.badRequest('Доступ запрещен'));
+				return next(ApiError.forbidden('Доступ запрещен'));
 		}
 
 		await User.update({

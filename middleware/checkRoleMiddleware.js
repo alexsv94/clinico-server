@@ -9,17 +9,17 @@ module.exports = function (role) {
 		try {
 			const token = req.headers.authorization.split(' ')[1];
 
-			if (!token) return res.status(401).json({ message: 'Not authorized' })
+			if (!token) return res.status(401).json({ message: 'Пользователь не авторизован' })
 
 			const decodedUser = jwt.verify(token, process.env.JWT_KEY);
 
 			req.user = decodedUser
 
-			if (decodedUser.role !== role) return res.status(403).json('Forbidden');
+			if (decodedUser.role !== role) return res.status(403).json('Недостаточно прав');
 
 			next()
 		} catch (e) {
-			res.status(401).json({ message: 'Not authorized' })
+			res.status(401).json({ message: 'Пользователь не авторизован' })
 		}
 	}
 }
