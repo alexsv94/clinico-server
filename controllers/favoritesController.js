@@ -38,6 +38,15 @@ class FavoritesController {
 		else return next(ApiError.badRequest('Заболевание не найдено в избранном'))
 	}
 
+	async checkDeseaseInFavorites(req, res, next) {
+		const { id } = req.params
+
+		const result = await FavoriteDesease.findOne({where: { deseaseId: id }});
+
+		if (result) return res.json(true)
+		else return res.json(false)
+	}
+
 	//MEDICATIONS
 
 	async getFavoriteMedications(req, res, next) {
@@ -71,6 +80,15 @@ class FavoritesController {
 
 		if (result > 0) return res.json({ message: `Удалено ${result} лек. препаратов из избранного` })
 		else return next(ApiError.badRequest('Лек. препарат не найден в избранном'))
+	}
+
+	async checkMedicationInFavorites(req, res, next) {
+		const { id } = req.params
+
+		const result = await FavoriteMedication.findOne({where: { medicationId: id }});
+
+		if (result) return res.json(true)
+		else return res.json(false)
 	}
 }
 
